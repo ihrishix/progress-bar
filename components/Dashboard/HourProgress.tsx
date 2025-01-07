@@ -11,6 +11,7 @@ export const HourProgress = () => {
   const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
   const [year, setYear] = useState("");
+  const [min, setMin] = useState("");
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
@@ -27,7 +28,8 @@ export const HourProgress = () => {
     setMonth(month);
     setYear(date.getFullYear().toString());
     setDay(ordinal_suffix_of(date.getDate()));
-    setHour(ordinal_suffix_of(date1.getHours()));
+    setHour(date.getHours().toString());
+    setMin(date.getMinutes().toString());
 
     setInterval(() => {
       const timeSinceStart = new Date().getTime() - startOfHour;
@@ -44,11 +46,11 @@ export const HourProgress = () => {
   return (
     <div className="relative z-10 text-white items-center flex justify-center">
       <div className="flex flex-col items-center text-center">
-        <HyperText className="relative z-10 text-lg md:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-sans font-bold">
+        <HyperText className="relative z-10 text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-sans font-bold">
           {year + " " + month}
         </HyperText>
-        <HyperText className="relative z-10 text-lg md:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-sans font-bold">
-          {hour + " HOUR of the day"}
+        <HyperText className="relative z-10 text-lg md:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-sans font-bold">
+          {hour + ":" + min}
         </HyperText>
         <span className="mb-2 bg-clip-text text-transparent bg-gradient-to-b from-slate-200 to-slate-600 font-sans font-bold text-4xl">
           <HyperText>hour progress</HyperText>
