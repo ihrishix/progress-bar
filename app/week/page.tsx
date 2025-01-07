@@ -1,9 +1,8 @@
 "use client";
 
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import { MonthProgress } from "../../components/Dashboard/MonthProgress";
-import { Overlay, Progress } from "../../components/Dashboard/Overlay";
 import { WeekProgress } from "@/components/Dashboard/WeekProgress";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Overlay, Progress } from "../../components/Dashboard/Overlay";
 
 export default function Home() {
   return (

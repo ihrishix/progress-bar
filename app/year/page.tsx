@@ -3,7 +3,6 @@
 import { Overlay, Progress } from "@/components/Dashboard/Overlay";
 import { YearProgress } from "@/components/Dashboard/YearProgress";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   return (

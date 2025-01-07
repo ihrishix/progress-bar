@@ -2,13 +2,11 @@
 
 import HyperText from "@/components/ui/hyper-text";
 import { Progress } from "@/components/ui/progress";
-import moment from "moment";
 import { useEffect, useState } from "react";
 
 export const HourProgress = () => {
   const [progress, setProgress] = useState("0.00000000");
   const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
   const [year, setYear] = useState("");
   const [min, setMin] = useState("");
@@ -27,7 +25,6 @@ export const HourProgress = () => {
     const month = date.toLocaleString("default", { month: "long" });
     setMonth(month);
     setYear(date.getFullYear().toString());
-    setDay(ordinal_suffix_of(date.getDate()));
     setHour(date.getHours().toString());
     setMin(date.getMinutes().toString());
 
@@ -69,18 +66,3 @@ export const HourProgress = () => {
     </div>
   );
 };
-
-function ordinal_suffix_of(i: number) {
-  let j = i % 10,
-    k = i % 100;
-  if (j === 1 && k !== 11) {
-    return i + "st";
-  }
-  if (j === 2 && k !== 12) {
-    return i + "nd";
-  }
-  if (j === 3 && k !== 13) {
-    return i + "rd";
-  }
-  return i + "th";
-}
