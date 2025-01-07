@@ -6,19 +6,13 @@ import { useEffect, useState } from "react";
 
 export const YearProgress = () => {
   const [progress, setProgress] = useState("0.00000000");
-  const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
     const date = new Date();
-
     const startOfYear = new Date(date.getFullYear(), 0, 1).getTime();
-
     const endOfYear = new Date(date.getFullYear(), 11, 31).getTime();
-
-    const month = date.toLocaleString("default", { month: "long" });
-    setMonth(month);
 
     setYear(date.getFullYear().toString());
     setInterval(() => {

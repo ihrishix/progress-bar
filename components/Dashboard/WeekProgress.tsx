@@ -11,7 +11,8 @@ export const WeekProgress = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [reset, setReset] = useState(false);
-  const [weekStartsMonday, setWeekStartsMonday] = useState(true);
+
+  const weekStartsMonday = true;
 
   useEffect(() => {
     const date = new Date();
@@ -111,19 +112,13 @@ function getSunday() {
 }
 
 function formatDate(date: Date) {
-  var options = {
-    weekday: "short",
-    month: "long",
-    day: "numeric",
-  };
-
-  // return date.toLocaleDateString(undefined, {
-  //   weekday: "short",
-  //   month: "long",
-  //   day: "numeric",
-  // } as Intl.DateTimeFormatOptions);
-
-  return date.toLocaleDateString("en-US", options).toString();
+  return date
+    .toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "long",
+      day: "numeric",
+    })
+    .toString();
 }
 
 function getWeekNumber() {
