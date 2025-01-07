@@ -5,12 +5,18 @@ import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 
 export const MonthProgress = () => {
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const [progress, setProgress] = useState("0.00000000");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(undefined);
+    }
+
     const date = new Date();
 
     const startOfMonth = new Date(
@@ -29,7 +35,7 @@ export const MonthProgress = () => {
     setMonth(month);
 
     setYear(date.getFullYear().toString());
-    setInterval(() => {
+    const interval = setInterval(() => {
       const timeSinceStart = new Date().getTime() - startOfMonth;
       if (timeSinceStart > endOfMonth - startOfMonth) {
         setReset(!reset);
@@ -39,6 +45,7 @@ export const MonthProgress = () => {
 
       setProgress(percentage.toFixed(7).toString());
     }, 100);
+    setIntervalId(interval);
 
     return () => {};
   }, [reset]);

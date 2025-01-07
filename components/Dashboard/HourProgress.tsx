@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 
 export const HourProgress = () => {
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const [progress, setProgress] = useState("0.00000000");
   const [month, setMonth] = useState("");
   const [hour, setHour] = useState("");
@@ -13,6 +14,11 @@ export const HourProgress = () => {
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(undefined);
+    }
+
     const date1 = new Date();
     const date2 = new Date();
     const date = new Date();
@@ -28,7 +34,7 @@ export const HourProgress = () => {
     setHour(date.getHours().toString());
     setMin(date.getMinutes().toString());
 
-    setInterval(() => {
+    const interval = setInterval(() => {
       const timeSinceStart = new Date().getTime() - startOfHour;
       if (timeSinceStart > endOfHour - startOfHour) {
         setReset(!reset);
@@ -37,6 +43,7 @@ export const HourProgress = () => {
       const percentage = (timeSinceStart / (endOfHour - startOfHour)) * 100;
       setProgress(percentage.toFixed(7).toString());
     }, 100);
+    setIntervalId(interval);
 
     return () => {};
   }, [reset]);

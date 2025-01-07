@@ -7,12 +7,18 @@ import { useEffect, useState } from "react";
 const weekStartsMonday = true;
 
 export const WeekProgress = () => {
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const [progress, setProgress] = useState("0.00000000");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(undefined);
+    }
+
     const date = new Date();
     const startOfWeek = getFirstDayOfWeek(weekStartsMonday).getTime();
     const endOfWeek = getLastDayOfWeek(weekStartsMonday).getTime();
@@ -21,7 +27,7 @@ export const WeekProgress = () => {
     setMonth(month);
     setYear(date.getFullYear().toString());
 
-    setInterval(() => {
+    const interval = setInterval(() => {
       const timeSinceStart = new Date().getTime() - startOfWeek;
       if (timeSinceStart > endOfWeek - startOfWeek) {
         setReset(!reset);
@@ -30,6 +36,7 @@ export const WeekProgress = () => {
       const percentage = (timeSinceStart / (endOfWeek - startOfWeek)) * 100;
       setProgress(percentage.toFixed(7).toString());
     }, 100);
+    setIntervalId(interval);
 
     return () => {};
   }, [reset]);

@@ -6,6 +6,7 @@ import { ordinal_suffix_of } from "@/lib/helper";
 import { useEffect, useState } from "react";
 
 export const DayProgress = () => {
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const [progress, setProgress] = useState("0.00000000");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
@@ -14,6 +15,11 @@ export const DayProgress = () => {
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(undefined);
+    }
+
     const date1 = new Date();
     const date2 = new Date();
     const date = new Date();
@@ -29,7 +35,7 @@ export const DayProgress = () => {
     setDay(ordinal_suffix_of(date.getDate()));
     setDayName(date.toLocaleDateString("en-US", { weekday: "long" }));
 
-    setInterval(() => {
+    const interval = setInterval(() => {
       const timeSinceStart = new Date().getTime() - startOfDay;
       if (timeSinceStart > endOfDay - startOfDay) {
         setReset(!reset);
@@ -39,6 +45,7 @@ export const DayProgress = () => {
       setProgress(percentage.toFixed(7).toString());
     }, 100);
 
+    setIntervalId(interval);
     return () => {};
   }, [reset]);
   return (
