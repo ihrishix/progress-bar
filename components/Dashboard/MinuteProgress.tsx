@@ -14,6 +14,11 @@ export const MinuteProgress = () => {
   const [reset, setReset] = useState(false);
 
   useEffect(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(undefined);
+    }
+
     const date1 = new Date();
     const date2 = new Date();
     const date = new Date();
@@ -47,12 +52,7 @@ export const MinuteProgress = () => {
 
     setIntervalId(interval);
 
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        setIntervalId(undefined);
-      }
-    };
+    return () => {};
   }, [reset]);
   return (
     <div className="relative z-10 text-white items-center flex justify-center">
