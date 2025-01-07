@@ -1,19 +1,51 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { LitupButton } from "../ui/LitupButton";
-import { Router } from "next/router";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const Overlay = ({ progressType }: { progressType: Progress }) => {
   const router = useRouter();
 
-  return (
+  const [isLayoutVisible, setIsLayoutVisible] = useState(true); // Tracks layout visibility
+  const [mouseMoved, setMouseMoved] = useState(false); // Tracks mouse activity
+
+  useEffect(() => {
+    let inactivityTimer: NodeJS.Timeout | undefined = undefined;
+
+    // Function to reset the inactivity timer
+    const resetTimer = () => {
+      setMouseMoved(true); // Mark mouse as moved
+      clearTimeout(inactivityTimer); // Clear any existing timer
+      inactivityTimer = setTimeout(() => {
+        setIsLayoutVisible(false); // Hide the layout after 5 seconds
+        setMouseMoved(false);
+      }, 2000);
+    };
+
+    // Add mousemove event listener
+    window.addEventListener("mousemove", resetTimer);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("mousemove", resetTimer);
+      clearTimeout(inactivityTimer);
+    };
+  }, []);
+
+  // Show the layout again when the mouse moves
+  useEffect(() => {
+    if (mouseMoved) {
+      setIsLayoutVisible(true);
+    }
+  }, [mouseMoved]);
+
+  return isLayoutVisible ? (
     <div className="relative z-10 space-x-2">
       <LitupButton
         text="Year"
         onClick={() => {
-          router.push(`/${Progress.YEAR}`);
+          router.push(`/year`);
         }}
         disabled={progressType == Progress.YEAR}
       />
@@ -45,7 +77,16 @@ export const Overlay = ({ progressType }: { progressType: Progress }) => {
         }}
         disabled={progressType == Progress.HOUR}
       />
+      <LitupButton
+        text="Minute"
+        onClick={() => {
+          router.push(`/${Progress.MINUTE}`);
+        }}
+        disabled={progressType == Progress.MINUTE}
+      />
     </div>
+  ) : (
+    <></>
   );
 };
 
@@ -55,4 +96,5 @@ export enum Progress {
   WEEK = "week",
   DAY = "day",
   HOUR = "hour",
+  MINUTE = "minute",
 }
